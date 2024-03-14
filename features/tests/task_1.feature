@@ -2,7 +2,7 @@
 Feature: Filtering
 
    Scenario: User can filter by sale status Last Units
-    Given Open the main page
+    Given Open the signin page
      When Log in to the page
      When Click on “off plan” at the left side menu
      Then Verify off-plan in url
