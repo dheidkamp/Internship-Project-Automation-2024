@@ -7,6 +7,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from app.application import Application
 
+
 def browser_init(context, scenario_name):
     """
     :param context: Behave context
@@ -21,19 +22,35 @@ def browser_init(context, scenario_name):
 
 
     # ### HEADLESS MODE ####
-    options = webdriver.ChromeOptions()
-    options.add_argument('headless')
-    service = Service(ChromeDriverManager().install())
-    context.driver = webdriver.Chrome(
-        options=options,
-        service=service
-    )
+    # options = webdriver.ChromeOptions()
+    # options.add_argument('headless')
+    # service = Service(ChromeDriverManager().install())
+    # context.driver = webdriver.Chrome(
+    #     options=options,
+    #     service=service
+    # )
 
+    ### BROWSERSTACK ###
+    # Register for BrowserStack, then grab it from https://www.browserstack.com/accounts/settings
+    bs_user = 'davidheidkamp_niuIE7'
+    bs_key = 'iAiL5eUMUEz8rsu2osoQ'
+    url = f'http://{bs_user}:{bs_key}@hub-cloud.browserstack.com/wd/hub'
+
+    options = Options()
+    bstack_options = {
+        'os': 'OS X',
+        'osVersion': 'Ventura',
+        'browserName': 'Safari',
+        'sessionName': scenario_name
+    }
+    options.set_capability('bstack:options', bstack_options)
+    context.driver = webdriver.Remote(command_executor=url, options=options)
 
     context.driver.maximize_window()
 
     context.driver.maximize_window()
-    context.driver.implicitly_wait(4)
+    context.wait = WebDriverWait(context.driver, 10)
+    # context.driver.implicitly_wait(4)
     context.app = Application(context.driver)
 
 
