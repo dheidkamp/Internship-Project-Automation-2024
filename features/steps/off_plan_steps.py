@@ -31,3 +31,4 @@ def verify_last_units(context):
     #     last_units_tag = listing.find_elements(*LAST_UNITS_TAG)
     #     assert len(last_units_tag) > 0, f'Listing does not have "Last Units" tag'
     context.app.off_plan_page.verify_last_units()
+    sleep(2)
